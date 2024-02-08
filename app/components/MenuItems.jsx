@@ -14,17 +14,15 @@ const MenuItems = ({ menu, open }) => {
     <>
       <Link
         href={menu.path}
-        className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2 hover:text-dark-purple ${
-          isActive && "text-dark-purple bg-light-white rounded-md mt-2"
-        }`}
+        className={`text-gray-300 text-sm flex items-center bg-light-white gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-2 hover:text-dark-purple ${isActive && "text-dark-purple bg-light-white rounded-md mt-2"
+          }`}
       >
         <span className="text-2xl block float-left duration-200">
           {menu.icon}
         </span>
         <span
-          className={`text-base font-medium flex-1 duration-200 ${
-            !open && "hidden"
-          }`}
+          className={`text-base font-medium flex-1 duration-200 ${!open && "hidden"
+            }`}
         >
           {menu.title}
         </span>

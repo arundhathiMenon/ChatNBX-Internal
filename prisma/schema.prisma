@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+}
+
+model Conversation {
+  id         Int       @id @default(autoincrement())
+  createdAt  DateTime  @default(now())
+  createdBy  Int       // Assuming createdBy is the ID of the user who created the conversation
+  title      String
+  teamID     Int       // Assuming teamID is the ID of the team associated with the conversation
+}
+
+model ConversationHistory {
+  id             Int       @id @default(autoincrement())
+  createdAt      DateTime  @default(now())
+  query          String
+  response       String
+  conversationId Int       // Assuming conversationId is the ID of the conversation associated with the history
+  rating         Float     // Rating of the conversation history, of type float
+
+  // Define relationships with other models if needed
+}
