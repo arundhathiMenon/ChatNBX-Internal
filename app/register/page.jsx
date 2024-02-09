@@ -1,4 +1,5 @@
 "use client"
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const initialValues = {
@@ -8,6 +9,7 @@ const initialValues = {
 }
 const Register = () => {
     const [formData, setFormData] = useState(initialValues);
+    const router = useRouter()
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,6 +31,7 @@ const Register = () => {
             })
             if (response.ok) {
                 console.log('User created successfully!')
+                router.push('/login')
             } else {
                 console.error('Failed to create user:', await response.json())
             }

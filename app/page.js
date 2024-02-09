@@ -6,16 +6,16 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [isAuth, setIsAuth] = useState(false)
-  const navigate = useRouter()
+  const router = useRouter()
 
   useEffect(() => {
     const storedToken = localStorage.getItem('userDetails');
     if (storedToken) {
       setIsAuth(true);
     } else {
-      navigate.push("/login"); 
+      router.push("/login"); 
     }
-  }, [navigate]);
+  }, [router]);
 
   return (
     <>
