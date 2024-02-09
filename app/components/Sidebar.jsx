@@ -3,26 +3,19 @@ import React, { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import Image from "next/image";
 import { IoMdAdd } from "react-icons/io";
-import { PiChatsDuotone } from "react-icons/pi";
-import { IoMdLogIn } from "react-icons/io";
 import { useRouter } from "next/navigation";
-import { usePathname } from "next/navigation";
 import MenuItems from "./MenuItems";
 import { BiLogOutCircle } from "react-icons/bi";
+import styles from "../Styles/Layout.module.css";
 
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
   const [path, setPath] = useState("/" || null);
-  const router = useRouter()
+  const router = useRouter();
   const regularMenus = [
     {
       title: "New Chat",
       icon: <IoMdAdd />,
-      path: "/",
-    },
-    {
-      title: "Recent Chats",
-      icon: <PiChatsDuotone />,
       path: "/",
     },
   ];
@@ -37,23 +30,23 @@ const Sidebar = () => {
   };
 
   const handleLogout = () => {
-    // Clear token from localStorage
-    localStorage.removeItem('token');
-    // Redirect to login page
+    localStorage.removeItem("token");
     router.push("/login");
   };
 
   return (
     <div
-      className={`bg-dark-purple h-auto p-5 pt-8  ${open ? "w-72" : "w-20"
-        } duration-300 relative`}
+      className={`bg-dark-purple h-auto p-5 pt-8  ${
+        open ? "w-72" : "w-20"
+      } duration-300 relative`}
     >
       <IoIosArrowBack
         onClick={() => setOpen(!open)}
-        className={`bg-white text-dark-purple text-3xl rounded-full absolute -right-3 top-9 border border-dark-purple cursor-pointer ${!open && "rotate-180"
-          } `}
+        className={`bg-white text-dark-purple text-3xl rounded-full absolute -right-3 top-9 border border-dark-purple cursor-pointer ${
+          !open && "rotate-180"
+        } `}
       />
-      <div className="flex justify-center">
+      <div className="flex">
         <Image
           src={"https://chat.tune.app/NimbleBox.svg"}
           alt="NimbleBox"
@@ -73,7 +66,42 @@ const Sidebar = () => {
           </li>
         ))}
       </ul>
-      <div className="absolute bottom-4 left-0 text-center py-2 px-4 w-full" onClick={handleLogout}>
+      <div className={`h-[450px] p-4 ${open ? "block" : "hidden"}`}>
+        <h2
+          className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 text-center
+            `}
+        >
+          RECENT CHATS
+        </h2>
+        <div className={`overflow-y-auto h-full scrollbar`}>
+          <ul class={`${styles.recent_chats}`}>
+            <li>Friend's Name</li>
+            <li>Family Member's Name</li>
+            <li>Work Colleague's Name</li>
+            <li>Group Chat Name</li>
+            <li>Another Friend's Name</li>
+            <li>Project Team Name</li>
+            <li>Study Group Name</li>
+            <li>Roommate's Name</li>
+            <li>Classmates' Group</li>
+            <li>Hobby Club Name</li>
+            <li>Friend's Name</li>
+            <li>Family Member's Name</li>
+            <li>Work Colleague's Name</li>
+            <li>Group Chat Name</li>
+            <li>Another Friend's Name</li>
+            <li>Project Team Name</li>
+            <li>Study Group Name</li>
+            <li>Roommate's Name</li>
+            <li>Classmates' Group</li>
+            <li>Hobby Club Name</li>
+          </ul>
+        </div>
+      </div>
+      <div
+        className="absolute bottom-4 left-0 text-center py-2 px-4 w-full"
+        onClick={handleLogout}
+      >
         <MenuItems
           menu={loginMenu}
           open={open}

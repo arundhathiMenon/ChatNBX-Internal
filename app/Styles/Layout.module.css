@@ -40,3 +40,25 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
+.recent_chats {
+  list-style-type: none;
+  padding: 0;
+  margin: 0; /* Remove default margin */
+}
+
+.recent_chats li {
+  cursor: pointer;
+  padding: 10px;
+  transition: background-color 0.3s;
+}
+
+.recent_chats li:hover {
+  background-color: #444;
+}
+
+
+
+
+
+
