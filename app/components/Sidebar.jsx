@@ -66,7 +66,7 @@ const Sidebar = () => {
           </li>
         ))}
       </ul>
-      <div className={`h-[500px] p-4 mt-4 ${open ? "block" : "hidden"}`}>
+      <div className={`h-[450px] p-4 mt-4 ${open ? "block" : "hidden"}`}>
         <h2
           className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 text-center
             `}
