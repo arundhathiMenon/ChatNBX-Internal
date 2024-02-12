@@ -6,16 +6,9 @@
   height: 100vh;
 }
 
-.chatHeader {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
 .chatMessages {
-  height: 70vh;
+  height: 85vh;
   overflow-y: auto;
-  border-bottom: 1px solid #ddd;
 }
 
 .chatInput {
@@ -45,6 +38,7 @@
   list-style-type: none;
   padding: 0;
   margin: 0; /* Remove default margin */
+  color: #fff;
 }
 
 .recent_chats li {

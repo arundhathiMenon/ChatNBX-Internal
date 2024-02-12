@@ -1,25 +1,26 @@
-"use client"
+"use client";
 import { useRouter } from "next/navigation";
 import ChatInterface from "./components/ChatInterface";
 import Sidebar from "./components/Sidebar";
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [isAuth, setIsAuth] = useState(false)
-  const router = useRouter()
+  const [isAuth, setIsAuth] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('userDetails');
+    const storedToken = localStorage.getItem("userDetails");
     if (storedToken) {
       setIsAuth(true);
     } else {
-      router.push("/login"); 
+      router.push("/login");
     }
   }, [router]);
 
   return (
     <>
-      {isAuth ? ( 
+      {isAuth ? (
         <>
           <Sidebar />
           <ChatInterface />

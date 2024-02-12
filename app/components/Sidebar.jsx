@@ -61,19 +61,19 @@ const Sidebar = () => {
               menu={menu}
               open={open}
               index={index}
-              onClick={() => handleEvent(menu.path)} // Pass menu path to handleEvent
+              onClick={() => handleEvent(menu.path)}
             />
           </li>
         ))}
       </ul>
-      <div className={`h-[450px] p-4 ${open ? "block" : "hidden"}`}>
+      <div className={`h-[500px] p-4 mt-4 ${open ? "block" : "hidden"}`}>
         <h2
           className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 text-center
             `}
         >
           RECENT CHATS
         </h2>
-        <div className={`overflow-y-auto h-full scrollbar`}>
+        <div className={`overflow-y-auto h-full`}>
           <ul class={`${styles.recent_chats}`}>
             <li>Friend's Name</li>
             <li>Family Member's Name</li>
@@ -99,7 +99,7 @@ const Sidebar = () => {
         </div>
       </div>
       <div
-        className="absolute bottom-4 left-0 text-center py-2 px-4 w-full"
+        className="absolute bottom-6 left-0 text-center py-2 px-4 w-full"
         onClick={handleLogout}
       >
         <MenuItems
