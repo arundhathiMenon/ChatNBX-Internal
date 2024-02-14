@@ -125,10 +125,10 @@ const ChatInterface = () => {
               <div key={index} className="flex flex-col items-start">
                 <div
                   className={`${
-                    isUser(message.name) ? "bg-[#89acff]" : "bg-[#20a7db]"
+                    isUser(message.name) ? "bg-[#af9ff3]" : "bg-[#6326e0]"
                   }
             ${
-              isUser(message.name) ? "text-white" : "text-black"
+              isUser(message.name) ? "text-black" : "text-white"
             } rounded-2xl p-2 md:p-4 max-w-3/4 mt-2`}
                 >
                   <p className="text-xs mb-1">{message.name}</p>
