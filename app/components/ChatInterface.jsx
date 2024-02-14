@@ -144,7 +144,7 @@ const ChatInterface = () => {
           <input
             type="text"
             placeholder="Type your message..."
-            className={`${styles.inputField} pr-12 pl-[100px] shadow-md  focus:border-blue-500 h-[50px] focus:outline-none `} // Add pr-12 for padding-right to accommodate the button
+            className={`${styles.inputField} pr-[100px] pl-8 shadow-md  focus:border-blue-500 h-[50px] focus:outline-none `} // Add pr-12 for padding-right to accommodate the button
             value={newMessage}
             onKeyPress={(e) => handleEnter(e)}
             onChange={(e) => setNewMessage(e.target.value)}
