@@ -8,9 +8,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const ChatProvider = ({ children }) => {
   const [historyChat, setHistoryChat] = useState([]);
+  const [userDetails,setUserDetails]=useState() 
 
   return (
-    <ChatContext.Provider value={{ historyChat, setHistoryChat }}>
+    <ChatContext.Provider value={{ historyChat, setHistoryChat,userDetails,setUserDetails }}>
       {children}
     </ChatContext.Provider>
   );

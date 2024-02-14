@@ -73,8 +73,8 @@ const Sidebar = () => {
         >
           RECENT CHATS
         </h2>
-        <div className={`overflow-y-auto h-full`}>
-          <ul class={`${styles.recent_chats}`}>
+        <div className={`overflow-y-auto h-full scrollbar`}>
+          <ul className={`${styles.recent_chats}`}>
             <li>Friend's Name</li>
             <li>Family Member's Name</li>
             <li>Work Colleague's Name</li>

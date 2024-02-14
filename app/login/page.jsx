@@ -1,8 +1,10 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
+import { useChat } from "../layout";
 
 const Login = () => {
+  const {userDetails,setUserDetails}=useChat()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -29,6 +31,7 @@ const Login = () => {
       if (response.ok) {
         const { token, user } = await response.json();
         localStorage.setItem("userDetails", JSON.stringify({ token, user }));
+        setUserDetails(JSON.stringify({ token, user }));
         window.location.href = "/";
       } else {
         console.error("Failed to log in:", await response.json());

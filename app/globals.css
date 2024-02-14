@@ -32,8 +32,18 @@ body {
   }
 }
 
-.scrollbar {
+.scrollbar::-webkit-scrollbar {
+  width: 6px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(155, 155, 155, 0.5) transparent;
 }
+
+.scrollbar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px  transparent;
+  border-radius: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 900px rgba(155, 155, 155, 0.5);
+} 
 

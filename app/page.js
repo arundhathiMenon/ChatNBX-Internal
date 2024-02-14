@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import ChatInterface from "./components/ChatInterface";
 import Sidebar from "./components/Sidebar";
 import { useEffect, useState } from "react";
+import '../app/globals.css'
 
 export default function Home() {
   const [isAuth, setIsAuth] = useState(false);
