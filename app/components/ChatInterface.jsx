@@ -1,15 +1,19 @@
 "use client";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import styles from "../Styles/Layout.module.css";
 import { isUser } from "./Logics/ChatLogic";
 import { FaArrowUp } from "react-icons/fa";
+import SnippetCode from "./SnippetCode";
+import { IoMdCopy } from "react-icons/io";
+import { IoMdDoneAll } from "react-icons/io";
 
 const ChatInterface = () => {
   const messageRef = useRef(null);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [copied, setCopied] = useState(false);
 
   const handleEnter = (e) => {
     if (e.key == "Enter") {
@@ -18,7 +22,7 @@ const ChatInterface = () => {
   };
 
   const getMessage = async (msg) => {
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await fetch("/api/prompt", {
         method: "POST",
@@ -39,6 +43,7 @@ const ChatInterface = () => {
       if (!response.ok) {
         throw new Error("Failed to get response");
       }
+
       const reader = response.body.getReader();
       let chunks = "";
       while (true) {
@@ -76,8 +81,8 @@ const ChatInterface = () => {
               } catch (error) {
                 console.log(error);
               }
-              setLoading(false)
             });
+            setLoading(false);
             return contentArray.join("");
           } catch (err) {
             console.error("Error parsing JSON:", err);
@@ -85,7 +90,7 @@ const ChatInterface = () => {
         }
       }
     } catch (err) {
-      setLoading(false)
+      setLoading(false);
       console.error("Error fetching data:", err);
     }
   };
@@ -97,8 +102,7 @@ const ChatInterface = () => {
       timestamp: new Date().toLocaleString(),
       content: newMessage,
     };
-    const userMessages = [...messages, userMessage];
-    setMessages(userMessages);
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
     setNewMessage("");
     let chatResponse = await getMessage(newMessage);
     const assistantMessage = {
@@ -106,8 +110,52 @@ const ChatInterface = () => {
       timestamp: new Date().toLocaleString(),
       content: chatResponse,
     };
-    const newMessages = [...messages, userMessage, assistantMessage];
-    setMessages(newMessages);
+    setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+  };
+
+  useEffect(() => {
+    messageRef.current?.scrollIntoView();
+  });
+
+  const renderMessageContent = (message) => {
+    const regex = /```([^```]*)```/gm;
+    const codeSnippets = message.content.split(regex);
+
+    return codeSnippets.map((snippet, index) => {
+      if (index % 2 === 0) {
+        return <div key={index}>{snippet}</div>;
+      } else {
+        return (
+          <pre className="whitespace-pre-wrap">
+            {copied ? (
+              <button className="py-1 justify-between px-4 text-white text-xs items-center flex">
+                <span className="text-base mt-1 flex">
+                  <IoMdDoneAll />
+                </span>
+                copied!
+              </button>
+            ) : (
+              <button
+                className="py-1 justify-between px-4 text-white text-xs items-center flex"
+                onClick={() => {
+                  navigator.clipboard.writeText(snippet);
+                  setCopied(true);
+                  setTimeout(() => {
+                    setCopied(false);
+                  }, 2000);
+                }}
+              >
+                <span className="text-base mt-1 flex">
+                  <IoMdCopy />
+                </span>
+                copy
+              </button>
+            )}
+            <SnippetCode code={snippet} />
+          </pre>
+        );
+      }
+    });
   };
 
   useEffect(() => {
@@ -124,15 +172,13 @@ const ChatInterface = () => {
             {messages.map((message, index) => (
               <div key={index} className="flex flex-col items-start">
                 <div
-                  className={`${
-                    isUser(message.name) ? "bg-[#af9ff3]" : "bg-[#6326e0]"
-                  }
+                  className={`
             ${
-              isUser(message.name) ? "text-black" : "text-white"
+              isUser(message.name) ? "text-white" : "text-white"
             } rounded-2xl p-2 md:p-4 max-w-3/4 mt-2`}
                 >
                   <p className="text-xs mb-1">{message.name}</p>
-                  <p className="font-semibold mb-1">{message.content}</p>
+                  {renderMessageContent(message)}
                   <p className="text-xs text-right">{message.timestamp}</p>
                 </div>
                 <div ref={messageRef} />
