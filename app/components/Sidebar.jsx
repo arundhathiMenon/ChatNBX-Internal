@@ -36,7 +36,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`bg-dark-purple h-auto p-5 pt-8  ${
+      className={`bg-['#242b4d'] h-auto p-5 pt-8  ${
         open ? "w-72" : "w-20"
       } duration-300 relative`}
     >
