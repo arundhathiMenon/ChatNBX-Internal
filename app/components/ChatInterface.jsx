@@ -7,6 +7,7 @@ import { FaArrowUp } from "react-icons/fa";
 import SnippetCode from "./SnippetCode";
 import { IoMdCopy } from "react-icons/io";
 import { IoMdDoneAll } from "react-icons/io";
+import { BeatLoader } from "react-spinners";
 
 const ChatInterface = () => {
   const messageRef = useRef(null);
@@ -184,6 +185,11 @@ const ChatInterface = () => {
                 <div ref={messageRef} />
               </div>
             ))}
+              {loading?
+          <div className="flex items-center justify-center">
+          <BeatLoader color="#36d7b7" />
+          </div>
+      :null} 
           </div>
         </div>
         <div className={`${styles.chatInput} relative`}>
