@@ -8,13 +8,41 @@ import SnippetCode from "./SnippetCode";
 import { IoMdCopy } from "react-icons/io";
 import { IoMdDoneAll } from "react-icons/io";
 import { BeatLoader } from "react-spinners";
+import { v4 as uuid } from "uuid";
+import { useChat } from "../layout";
 
 const ChatInterface = () => {
   const messageRef = useRef(null);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [copied, setCopied] = useState(false);
+  const { historyChat, setHistoryChat } = useChat();
+
+  const dataSet = async ({ title, chats }) => {
+    try {
+      const response = await fetch("/api/conversationHistory", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, chats }),
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const obj = {
+      title: "new title",
+      _id:uuid(),
+      chats: [messages],
+    };
+    if (messages.length > 0) {
+      setHistoryChat(obj);
+      dataSet(obj);
+    }
+  }, [messages]);
 
   const handleEnter = (e) => {
     if (e.key == "Enter") {
@@ -44,7 +72,6 @@ const ChatInterface = () => {
       if (!response.ok) {
         throw new Error("Failed to get response");
       }
-
       const reader = response.body.getReader();
       let chunks = "";
       while (true) {
@@ -76,6 +103,7 @@ const ChatInterface = () => {
                 }
               })
               .filter((obj) => obj !== null);
+
             const contentArray = arrayOfObjects.map((obj) => {
               try {
                 return obj.choices[0].delta.content;
@@ -99,6 +127,7 @@ const ChatInterface = () => {
   const handleSendMessage = async () => {
     if (newMessage.trim() === "") return;
     const userMessage = {
+      role: "user",
       name: "You",
       timestamp: new Date().toLocaleString(),
       content: newMessage,
@@ -122,41 +151,21 @@ const ChatInterface = () => {
     const regex = /```([^```]*)```/gm;
     const codeSnippets = message.content.split(regex);
 
-    return codeSnippets.map((snippet, index) => {
-      if (index % 2 === 0) {
-        return <div key={index}>{snippet}</div>;
-      } else {
-        return (
-          <pre className="whitespace-pre-wrap">
-            {copied ? (
-              <button className="py-1 justify-between px-4 text-white text-xs items-center flex">
-                <span className="text-base mt-1 flex">
-                  <IoMdDoneAll />
-                </span>
-                copied!
-              </button>
-            ) : (
-              <button
-                className="py-1 justify-between px-4 text-white text-xs items-center flex"
-                onClick={() => {
-                  navigator.clipboard.writeText(snippet);
-                  setCopied(true);
-                  setTimeout(() => {
-                    setCopied(false);
-                  }, 2000);
-                }}
-              >
-                <span className="text-base mt-1 flex">
-                  <IoMdCopy />
-                </span>
-                copy
-              </button>
-            )}
-            <SnippetCode code={snippet} />
-          </pre>
-        );
-      }
-    });
+    return (
+      <>
+        {codeSnippets.map((snippet, index) => {
+          if (index % 2 === 0) {
+            return <div key={index}>{snippet}</div>;
+          } else {
+            return (
+              <pre className="whitespace-pre-wrap prose prose-invert">
+                <SnippetCode code={snippet} />
+              </pre>
+            );
+          }
+        })}
+      </>
+    );
   };
 
   useEffect(() => {
@@ -185,11 +194,11 @@ const ChatInterface = () => {
                 <div ref={messageRef} />
               </div>
             ))}
-              {loading?
-          <div className="flex items-center justify-center">
-          <BeatLoader color="#36d7b7" />
-          </div>
-      :null} 
+            {loading ? (
+              <div className="flex items-center justify-center">
+                <BeatLoader color="#36d7b7" />
+              </div>
+            ) : null}
           </div>
         </div>
         <div className={`${styles.chatInput} relative`}>
@@ -206,7 +215,6 @@ const ChatInterface = () => {
             onClick={handleSendMessage}
             className={`${styles.sendButton}text-white absolute end-5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-1  focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
           >
-            {" "}
             <FaArrowUp />
           </button>
         </div>
