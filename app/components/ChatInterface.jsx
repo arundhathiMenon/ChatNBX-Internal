@@ -27,7 +27,6 @@ const ChatInterface = () => {
         },
         body: JSON.stringify({ title, chats }),
       });
-      console.log("responseresponse",response)
     } catch (error) {
       console.log(error);
     }
