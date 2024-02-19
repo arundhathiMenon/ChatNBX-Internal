@@ -20,7 +20,7 @@ const ChatInterface = () => {
 
   const dataSet = async ({ title, chats }) => {
     try {
-      const response = await fetch("/api/conversationHistory", {
+      const response = await fetch("/api/conversationhistory", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
