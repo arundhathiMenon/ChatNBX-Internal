@@ -35,7 +35,7 @@ const ChatInterface = () => {
   useEffect(() => {
     const obj = {
       title: "new title",
-      _id:uuid(),
+      _id: uuid(),
       chats: [messages],
     };
     if (messages.length > 0) {
@@ -188,7 +188,9 @@ const ChatInterface = () => {
             } rounded-2xl p-2 md:p-4 max-w-3/4 mt-2`}
                 >
                   <p className="text-xs mb-1">{message.name}</p>
-                  {renderMessageContent(message)}
+                  <pre  style={{ width: "800px", overflowX: "auto" }}>
+                    <code style={{ display: "block", whiteSpace: "pre-wrap", fontFamily: "monospace" }}>{renderMessageContent(message)}</code>
+                  </pre>
                   <p className="text-xs text-right">{message.timestamp}</p>
                 </div>
                 <div ref={messageRef} />
