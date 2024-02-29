@@ -16,16 +16,17 @@ const ChatInterface = () => {
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
-  const { historyChat, setHistoryChat } = useChat();
+  const [memos, setMemos] = useState([]);
+  const [conversation_id, setConversation_id] = useState(uuid());
 
-  const dataSet = async ({ title, chats }) => {
+  const dataSet = async ({ title, conversation_id, query, response }) => {
     try {
-      const response = await fetch("/api/conversationhistory", {
+      const result = await fetch("/api/conversations", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, chats }),
+        body: JSON.stringify({ title, conversation_id, query, response }),
       });
     } catch (error) {
       console.log(error);
@@ -35,14 +36,20 @@ const ChatInterface = () => {
   useEffect(() => {
     const obj = {
       title: "new title",
-      _id: uuid(),
-      chats: [messages],
+      conversation_id,
+      query: memos
+        .filter((message) => message.role === "user")
+        .map((message) => message.content)
+        .join(""),
+      response: memos
+        .filter((message) => message.role === "system")
+        .map((message) => message.content)
+        .join(""),
     };
     if (messages.length > 0) {
-      setHistoryChat(obj);
       dataSet(obj);
     }
-  }, [messages]);
+  }, [memos]);
 
   const handleEnter = (e) => {
     if (e.key == "Enter") {
@@ -136,11 +143,13 @@ const ChatInterface = () => {
     setNewMessage("");
     let chatResponse = await getMessage(newMessage);
     const assistantMessage = {
+      role: "system",
       name: "chatBNX",
       timestamp: new Date().toLocaleString(),
       content: chatResponse,
     };
     setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+    setMemos([userMessage, assistantMessage]);
   };
 
   useEffect(() => {
@@ -188,8 +197,16 @@ const ChatInterface = () => {
             } rounded-2xl p-2 md:p-4 max-w-3/4 mt-2`}
                 >
                   <p className="text-xs mb-1">{message.name}</p>
-                  <pre  style={{ width: "800px", overflowX: "auto" }}>
-                    <code style={{ display: "block", whiteSpace: "pre-wrap", fontFamily: "monospace" }}>{renderMessageContent(message)}</code>
+                  <pre style={{ width: "800px", overflowX: "auto" }}>
+                    <code
+                      style={{
+                        display: "block",
+                        whiteSpace: "pre-wrap",
+                        fontFamily: "monospace",
+                      }}
+                    >
+                      {renderMessageContent(message)}
+                    </code>
                   </pre>
                   <p className="text-xs text-right">{message.timestamp}</p>
                 </div>
